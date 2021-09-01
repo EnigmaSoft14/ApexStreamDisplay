@@ -1,0 +1,14 @@
+E:\Documents\Visual Studio Projects\ApexStreamDisplay\ApexStreamDisplay\bin\Debug\ApexStreamDisplay.exe.config
+E:\Documents\Visual Studio Projects\ApexStreamDisplay\ApexStreamDisplay\bin\Debug\ApexStreamDisplay.exe
+E:\Documents\Visual Studio Projects\ApexStreamDisplay\ApexStreamDisplay\bin\Debug\ApexStreamDisplay.pdb
+E:\Documents\Visual Studio Projects\ApexStreamDisplay\ApexStreamDisplay\obj\Debug\ApexStreamDisplay.csproj.AssemblyReference.cache
+E:\Documents\Visual Studio Projects\ApexStreamDisplay\ApexStreamDisplay\obj\Debug\ApexStreamDisplay.MainForm.resources
+E:\Documents\Visual Studio Projects\ApexStreamDisplay\ApexStreamDisplay\obj\Debug\ApexStreamDisplay.Properties.Resources.resources
+E:\Documents\Visual Studio Projects\ApexStreamDisplay\ApexStreamDisplay\obj\Debug\ApexStreamDisplay.csproj.GenerateResource.cache
+E:\Documents\Visual Studio Projects\ApexStreamDisplay\ApexStreamDisplay\obj\Debug\ApexStreamDisplay.csproj.CoreCompileInputs.cache
+E:\Documents\Visual Studio Projects\ApexStreamDisplay\ApexStreamDisplay\obj\Debug\ApexStreamDisplay.exe
+E:\Documents\Visual Studio Projects\ApexStreamDisplay\ApexStreamDisplay\obj\Debug\ApexStreamDisplay.pdb
+E:\Documents\Visual Studio Projects\ApexStreamDisplay\ApexStreamDisplay\bin\Debug\icon.ico
+E:\Documents\Visual Studio Projects\ApexStreamDisplay\ApexStreamDisplay\bin\Debug\Newtonsoft.Json.dll
+E:\Documents\Visual Studio Projects\ApexStreamDisplay\ApexStreamDisplay\bin\Debug\Newtonsoft.Json.xml
+E:\Documents\Visual Studio Projects\ApexStreamDisplay\ApexStreamDisplay\obj\Debug\ApexStreamDisplay.csproj.CopyComplete
