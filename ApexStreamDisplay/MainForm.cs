@@ -141,16 +141,10 @@ namespace ApexStreamDisplay
             // RP
             try
             {
-                if (plusCheckBox.Checked == true)
-                {
-                    _rp = _rp + Convert.ToInt32(rpTextBox.Value);
-                    WriteRPToFile(_rp);
-                }
-                else if (plusCheckBox.Checked == false)
-                {
-                    _rp = _rp - Convert.ToInt32(rpTextBox.Value);
-                    WriteRPToFile(_rp);
-                }
+                int rp = Convert.ToInt32(rpCalcTB.Text);
+                _rp = _rp + rp;
+
+                WriteRPToFile(Convert.ToInt32(_rp));
             }
             catch (Exception ex)
             {
@@ -223,59 +217,9 @@ namespace ApexStreamDisplay
             WriteRPToFile(0);
         }
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-            rpTextBox.Value = 12;
-        }
-
-        private void button5_Click(object sender, EventArgs e)
-        {
-            rpTextBox.Value = 24;
-        }
-
-        private void button10_Click(object sender, EventArgs e)
-        {
-            rpTextBox.Value = 238;
-        }
-
-        private void button4_Click(object sender, EventArgs e)
-        {
-            rpTextBox.Value = 36;
-        }
-
-        private void button7_Click(object sender, EventArgs e)
-        {
-            rpTextBox.Value = 214;
-        }
-
-        private void button3_Click(object sender, EventArgs e)
-        {
-            rpTextBox.Value = 48;
-        }
-
-        private void button8_Click(object sender, EventArgs e)
-        {
-            rpTextBox.Value = 202;
-        }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-            rpTextBox.Value = 60;
-        }
-
-        private void button9_Click(object sender, EventArgs e)
-        {
-            rpTextBox.Value = 190;
-        }
-
         private void showFileLocationToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Process.Start(_directory);
-        }
-
-        private void button6_Click(object sender, EventArgs e)
-        {
-            rpTextBox.Value = 226;
         }
 
         private void showCheckBox_CheckedChanged(object sender, EventArgs e)
@@ -486,6 +430,108 @@ namespace ApexStreamDisplay
         private void songFormatButton_Click(object sender, EventArgs e)
         {
             outputFormatText.Text = "$rp";
+        }
+
+        private void calculateButton_Click(object sender, EventArgs e)
+        {
+            CalculateRP();
+        }
+
+        public void CalculateRP()
+        {
+            decimal rpTotal = 0 - matchUpDown.Value;
+
+            if (placeUpDown.Value > 13)
+            {
+                rpTotal = rpTotal + (killsUpDown.Value * 10);
+            }
+            else
+            {
+                switch (placeUpDown.Value)
+                {
+                    case 1:
+                        rpTotal = rpTotal + 100;
+                        rpTotal = rpTotal + (killsUpDown.Value * 25);
+                        break;
+
+                    case 2:
+                        rpTotal = rpTotal + 60;
+                        rpTotal = rpTotal + (killsUpDown.Value * 20);
+                        break;
+
+                    case 3:
+                        rpTotal = rpTotal + 40;
+                        rpTotal = rpTotal + (killsUpDown.Value * 20);
+                        break;
+
+                    case 4:
+                        rpTotal = rpTotal + 40;
+                        rpTotal = rpTotal + (killsUpDown.Value * 15);
+                        break;
+
+                    case 5:
+                        rpTotal = rpTotal + 30;
+                        rpTotal = rpTotal + (killsUpDown.Value * 15);
+                        break;
+
+                    case 6:
+                        rpTotal = rpTotal + 30;
+                        rpTotal = rpTotal + (killsUpDown.Value * 12);
+                        break;
+
+                    case 7:
+                        rpTotal = rpTotal + 20;
+                        rpTotal = rpTotal + (killsUpDown.Value * 12);
+                        break;
+
+                    case 8:
+                        rpTotal = rpTotal + 20;
+                        rpTotal = rpTotal + (killsUpDown.Value * 12);
+                        break;
+
+                    case 9:
+                        rpTotal = rpTotal + 10;
+                        rpTotal = rpTotal + (killsUpDown.Value * 12);
+                        break;
+
+                    case 10:
+                        rpTotal = rpTotal + 10;
+                        rpTotal = rpTotal + (killsUpDown.Value * 12);
+                        break;
+
+                    case 11:
+                        rpTotal = rpTotal + 5;
+                        rpTotal = rpTotal + (killsUpDown.Value * 10);
+                        break;
+
+                    case 12:
+                        rpTotal = rpTotal + 5;
+                        rpTotal = rpTotal + (killsUpDown.Value * 10);
+                        break;
+
+                    case 13:
+                        rpTotal = rpTotal + 5;
+                        rpTotal = rpTotal + (killsUpDown.Value * 10);
+                        break;
+                }
+            }
+
+            rpCalcTB.Text = rpTotal.ToString();
+        }
+
+        private void matchUpDown_ValueChanged(object sender, EventArgs e)
+        {
+            CalculateRP();
+        }
+
+        private void killsUpDown_ValueChanged(object sender, EventArgs e)
+        {
+            CalculateRP();
+        }
+
+        private void placeUpDown_ValueChanged(object sender, EventArgs e)
+        {
+            CalculateRP();
         }
     }
 }
