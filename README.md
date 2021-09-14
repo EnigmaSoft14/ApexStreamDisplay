@@ -1,6 +1,9 @@
 # ApexStreamDisplay
 A simple program to display Apex Legends stats in OBS Studio through textfiles.
 
+# Disclaimer
+The app will trigger Microsoft SmartScreen. First of all, GitHub’s terms of service is very clear that: "You must not transmit any worms or viruses or any code of a destructive nature." As a hobbyist programmer, I’m not a verified publisher to Microsoft. This means that Windows Security flags all my applications as potentially dangerous. I have double and triple checked the code and its 100% safe.
+
 
 # What if I have a question or need more help?
 * Feel free to [tweet](https://twitter.com/theguitarleader) me or come visit the [Discord Server.](https://discord.gg/qzymgKGb7j)
