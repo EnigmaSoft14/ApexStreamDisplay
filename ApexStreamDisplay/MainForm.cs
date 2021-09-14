@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Logging;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -17,18 +18,20 @@ namespace ApexStreamDisplay
 {
     public partial class MainForm : Form
     {
-        public static string _version = "v2.1";
+        public static string _version = "3.0 (Beta)";
         public static string _directory = Directory.GetCurrentDirectory();
-        public StreamWriter _logger;
+        public static int _apiVersion = 5;
+
         public static int _kills;
         public static int _wins;
         public static int _rp;
+        public static int _matchRP;
         public static int _games;
 
         public MainForm()
         {
             InitializeComponent();
-            this.Text = "Stream Display ";
+            this.Text = "Apex RP Tracker ";
 
             if (!Directory.Exists(_directory + @"\TextFiles"))
             {
@@ -38,15 +41,25 @@ namespace ApexStreamDisplay
             {
                 Directory.CreateDirectory(_directory + @"\Data");
             }
-            else if (!Directory.Exists(_directory + @"\Logs"))
+            else if (!Directory.Exists(_directory + @"\logs"))
             {
-                Directory.CreateDirectory(_directory + @"\Logs");
-                _logger = new StreamWriter(_directory + @"\Logs\latest.log");
+                Directory.CreateDirectory(_directory + @"\logs");
             }
-            else
+            else if (File.Exists(Path.Combine(_directory, "logs", "latest.log")))
             {
-                _logger = new StreamWriter(_directory + @"\Logs\latest.log");
+                Logger.Delete();
             }
+
+            Logger.LogSystemInfo();
+            Logger.Separate();
+            Logger.WriteLine($"{this.Text} v{_version}");
+            Logger.LogModules();
+        }
+
+        private void MainForm_Shown(object sender, EventArgs e)
+        {
+            LoadAPI();
+            Logger.WriteLine("==== Startup Complete ======================");
         }
 
         public void WriteKillsToFile(string value)
@@ -80,6 +93,7 @@ namespace ApexStreamDisplay
                 using (StreamWriter sw = new StreamWriter(_directory + @"\TextFiles\RP.txt"))
                 {
                     sw.WriteLine(format);
+                    Console.WriteLine(format);
                 }
             }
             else if (value < 0)
@@ -132,7 +146,7 @@ namespace ApexStreamDisplay
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                Log(ex.Message);
+                Logger.Exception(ex);
             }
         }
 
@@ -149,7 +163,7 @@ namespace ApexStreamDisplay
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                Log(ex.Message);
+                Logger.Exception(ex);
             }
         }
 
@@ -165,7 +179,7 @@ namespace ApexStreamDisplay
             catch (Exception ex)
             {
                 File.Create(_directory + @"\TextFiles\Kills.txt");
-                Log(ex.Message);
+                Logger.Exception(ex);
             }
         }
 
@@ -181,7 +195,7 @@ namespace ApexStreamDisplay
             catch (Exception ex)
             {
                 File.Create(_directory + @"\TextFiles\Wins.txt");
-                Log(ex.Message);
+                Logger.Exception(ex);
             }
         }
 
@@ -197,7 +211,7 @@ namespace ApexStreamDisplay
             catch (Exception ex)
             {
                 File.Create(_directory + @"\TextFiles\RP.txt");
-                Log(ex.Message);
+                Logger.Exception(ex);
             }
         }
 
@@ -248,53 +262,120 @@ namespace ApexStreamDisplay
         {
             try
             {
-                int playerRP = GetPlayerRP("https://api.mozambiquehe.re/bridge?version=5&platform=PC&player=" + usernameTextBox.Text + "&auth=" + apiKeyTextBox.Text);
-                autoRPUpDown.Value = playerRP;
+                var player = GetPlayerData("https://api.mozambiquehe.re/bridge?version=" + _apiVersion + "&platform=PC&player=" + usernameTextBox.Text + "&auth=" + apiKeyTextBox.Text);
+                autoRPUpDown.Value = Convert.ToInt32(player.global.rank.rankScore);
+                _matchRP = Convert.ToInt32(player.global.rank.rankScore);
             }
             catch(Exception ex)
             {
                 MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                Log(ex.Message);
+                Logger.Exception(ex);
             }
         }
 
         private void button12_Click(object sender, EventArgs e)
         {
-            int playerRP = GetPlayerRP("https://api.mozambiquehe.re/bridge?version=5&platform=PC&player=" + usernameTextBox.Text + "&auth=" + apiKeyTextBox.Text);
-
-            var rp = playerRP - autoRPUpDown.Value;
-
-            _rp = Convert.ToInt32(rp);
-            WriteRPToFile(_rp);
+            var player = GetPlayerData("https://api.mozambiquehe.re/bridge?version=5&platform=PC&player=" + usernameTextBox.Text + "&auth=" + apiKeyTextBox.Text);
+            UpdateMatchHistory(player);            
         }
 
-        public int GetPlayerRP(string url)
+        void UpdateMatchHistory(dynamic playerData)
         {
             try
             {
-                var startTimestamp = DateTime.Now;
+                var rpDiff = Convert.ToInt32(playerData.global.rank.rankScore - autoRPUpDown.Value);
+                int rp = Convert.ToInt32(playerData.global.rank.rankScore) - _matchRP;
 
+                Console.WriteLine($"RP: {rp}");
+                //Console.WriteLine($"Match RP: {matchRP}");
+                Console.WriteLine($"Global Match RP: {_matchRP}");
+                Console.WriteLine($"Player RP: {Convert.ToInt32(playerData.global.rank.rankScore)}");
+
+                _matchRP = Convert.ToInt32(playerData.global.rank.rankScore);
+
+                if (rp != _rp)
+                {
+                    string rpString = null;
+                    if (rp >= 0)
+                    {
+                        rpString = "+" + rp.ToString();
+                    }
+                    else if (rp < 0)
+                    {
+                        rpString = rp.ToString();
+                    }
+
+                    string[] row = { DateTime.Now.ToString("hh:mm:ss tt"), playerData.realtime.selectedLegend, rpString };
+                    ListViewItem lvi = new ListViewItem(row);
+
+                    if (rp > _rp)
+                    {
+                        lvi.ForeColor = Color.Green;
+                    }
+                    else if (rp <= _rp)
+                    {
+                        lvi.ForeColor = Color.Red;
+                    }
+
+                    matchHistory.Items.Add(lvi);
+                }
+
+                _rp = rpDiff;
+                WriteRPToFile(_rp);
+            }
+            catch (Exception ex)
+            {
+                Logger.Exception(ex);
+            }
+        }
+
+        public dynamic GetPlayerData(string url)
+        {
+            try
+            {
+                Logger.WriteLine("Sending API Request:");
+                Logger.WriteLine($"   Url: {url}");
+
+                var startTimestamp = DateTime.Now;
                 var request = WebRequest.Create(url);
                 HttpWebResponse response = (HttpWebResponse)request.GetResponse();
                 Stream dataStream = response.GetResponseStream();
                 StreamReader sr = new StreamReader(dataStream);
                 string responseString = sr.ReadToEnd();
                 dynamic playerData = JsonConvert.DeserializeObject(responseString);
-                int rp = Convert.ToInt32(playerData.global.rank.rankScore);
-                var endTimestamp = DateTime.Now;
 
-                var interval = endTimestamp - startTimestamp;
+                if(playerData != null)
+                {
+                    int rp = Convert.ToInt32(playerData.global.rank.rankScore);
+                    var endTimestamp = DateTime.Now;
 
-                string format = $"Pulled ranked score \"{playerData.global.rank.rankScore}\" from player \"{playerData.global.name}\" in {interval.TotalMilliseconds} ms";
-                LogAndDisplay(format);
+                    var interval = endTimestamp - startTimestamp;
 
-                return rp;
+                    Logger.WriteLine($"   Player: {playerData.global.name}");
+                    Logger.WriteLine($"   Platform: {playerData.global.platform}");
+                    Logger.WriteLine($"   RP Score: {playerData.global.rank.rankScore}");
+                    Logger.WriteLine($"   Response Time: {interval.TotalMilliseconds}");
+                    Logger.WriteLine($"   Version: {_apiVersion}");
+                    Logger.WriteLine($"   Access Type: {playerData.mozambiquehere_internal.APIAccessType}");
+                    Logger.WriteLine($"   Cluster ID: {playerData.mozambiquehere_internal.ClusterID}");
+                    Logger.WriteLine($"   Cluster Srv: {playerData.mozambiquehere_internal.clusterSrv}");
+
+                    string format = $"Pulled ranked score \"{playerData.global.rank.rankScore}\" from player \"{playerData.global.name}\" in {interval.TotalMilliseconds} ms";
+                    outputTextBox.Text = format;
+                    return playerData;
+                }
+                else
+                {
+                    MessageBox.Show("No response from API", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    Logger.WriteLine("Request returned null");
+                    return null;
+                }
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                Log(ex.Message);
-                return 0;
+                Logger.Exception(ex);
+                return null;
             }
         }
 
@@ -303,6 +384,7 @@ namespace ApexStreamDisplay
             string filePath = _directory + @"\Data\save.txt";
             if (File.Exists(filePath))
             {
+                Logger.WriteLine("Loading API info:");
                 using (StreamReader sr = new StreamReader(filePath))
                 {
                     string line;
@@ -311,18 +393,23 @@ namespace ApexStreamDisplay
                         if (line.Contains("Username:"))
                         {
                             usernameTextBox.Text = line.Replace("Username:", "");
+                            Logger.WriteLine($"   {line}");
                         }
                         else if (line.Contains("ApiKey:"))
                         {
                             apiKeyTextBox.Text = line.Replace("ApiKey:", "");
+                            Logger.WriteLine($"   {line}");
                         }
                         else if(line.Contains("StaringRP:"))
                         {
                             autoRPUpDown.Value = Convert.ToDecimal(line.Replace("StaringRP:", ""));
+                            _matchRP = Convert.ToInt32(line.Replace("StaringRP:", ""));
+                            Logger.WriteLine($"   {line}");
                         }
                         else if (line.Contains("OutputFormat:"))
                         {
                             outputFormatText.Text = line.Replace("OutputFormat:", "");
+                            Logger.WriteLine($"   {line}");
                         }
                     }
                 }
@@ -331,26 +418,28 @@ namespace ApexStreamDisplay
 
         public void SaveAPI()
         {
+            Logger.WriteLine("Saving API Info:");
             using (StreamWriter sw = new StreamWriter(_directory + @"\Data\save.txt"))
             {
                 sw.WriteLine("Username:" + usernameTextBox.Text);
+                Logger.WriteLine("Username:" + usernameTextBox.Text);
+
                 sw.WriteLine("ApiKey:" + apiKeyTextBox.Text);
+                Logger.WriteLine("ApiKey:" + apiKeyTextBox.Text);
+
                 sw.WriteLine("StaringRP:" + autoRPUpDown.Value);
+                Logger.WriteLine("StaringRP:" + autoRPUpDown.Value);
+
                 sw.WriteLine("OutputFormat:" + outputFormatText.Text);
+                Logger.WriteLine("OutputFormat:" + outputFormatText.Text);
                 sw.Close();
             }
         }
 
-        private void MainForm_Shown(object sender, EventArgs e)
-        {
-            LoadAPI();
-            _logger.WriteLine($"Apex Stream Display {_version}");
-        }
-
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
+            Logger.WriteLine("==== Shutting down ==============");
             SaveAPI();
-            //SaveLog();
         }
 
         private void autoCheckBox_CheckedChanged(object sender, EventArgs e)
@@ -362,7 +451,7 @@ namespace ApexStreamDisplay
                 loopTimer.Start();
 
                 string format = $"Started auto refresh on interval {minutesUpDown.Value * 60} seconds";
-                LogAndDisplay(format);
+                outputTextBox.Text = format;
             }
             else
             {
@@ -370,45 +459,19 @@ namespace ApexStreamDisplay
                 loopTimer.Stop();
 
                 string format = $"[Stopped auto refresh";
-                LogAndDisplay(format);
+                outputTextBox.Text = format;
             }
         }
 
         private void loopTimer_Tick(object sender, EventArgs e)
         {
-            int playerRP = GetPlayerRP("https://api.mozambiquehe.re/bridge?version=5&platform=PC&player=" + usernameTextBox.Text + "&auth=" + apiKeyTextBox.Text);
-
-            var rp = playerRP - autoRPUpDown.Value;
-
-            _rp = Convert.ToInt32(rp);
-            WriteRPToFile(_rp);
-        }
-
-        public void LogAndDisplay(string log)
-        {
-            var timestamp = DateTime.Now;
-            string format = $"[{timestamp.ToString("HH:mm:ss")}] {log}";
-
-            outputTextBox.Text = format;
-            Console.WriteLine(format);
-            _logger.WriteLine(format);
-            _logger.Flush();
-        }
-
-        public void Log(string log)
-        {
-            var timestamp = DateTime.Now;
-            string format = $"[{timestamp.ToString("HH:mm:ss")}] {log}";
-
-            Console.WriteLine(format);
-            _logger.WriteLine(format);
-            _logger.Flush();
+            var player = GetPlayerData("https://api.mozambiquehe.re/bridge?version=5&platform=PC&player=" + usernameTextBox.Text + "&auth=" + apiKeyTextBox.Text);
+            UpdateMatchHistory(player);
         }
 
         public void SaveLog()
         {
             var timestamp = DateTime.Now;
-            _logger.Close();
             File.Move(_directory + @"\Logs\latest.log", _directory + @"\Logs\" + timestamp.ToString("yyyy-MM-dd HH-mm-ss") + ".log");
         }
 

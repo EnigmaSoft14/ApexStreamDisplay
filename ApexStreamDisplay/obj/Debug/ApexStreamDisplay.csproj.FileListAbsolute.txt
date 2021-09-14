@@ -12,3 +12,5 @@ E:\Documents\Visual Studio Projects\ApexStreamDisplay\ApexStreamDisplay\bin\Debu
 E:\Documents\Visual Studio Projects\ApexStreamDisplay\ApexStreamDisplay\bin\Debug\Newtonsoft.Json.dll
 E:\Documents\Visual Studio Projects\ApexStreamDisplay\ApexStreamDisplay\bin\Debug\Newtonsoft.Json.xml
 E:\Documents\Visual Studio Projects\ApexStreamDisplay\ApexStreamDisplay\obj\Debug\ApexStreamDisplay.csproj.CopyComplete
+E:\Documents\Visual Studio Projects\ApexStreamDisplay\ApexStreamDisplay\bin\Debug\Logging.dll
+E:\Documents\Visual Studio Projects\ApexStreamDisplay\ApexStreamDisplay\bin\Debug\Logging.pdb

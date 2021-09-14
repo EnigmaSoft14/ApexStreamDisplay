@@ -1,0 +1,4 @@
+Username:noobkingsmith
+ApiKey:5vH9DcoCcNFDfEWBFPbP
+StaringRP:10800
+OutputFormat:$rp

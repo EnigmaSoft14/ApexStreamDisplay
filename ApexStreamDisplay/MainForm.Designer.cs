@@ -63,6 +63,7 @@ namespace ApexStreamDisplay
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.updateButton = new System.Windows.Forms.Button();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.textBox6 = new System.Windows.Forms.TextBox();
             this.matchUpDown = new System.Windows.Forms.NumericUpDown();
             this.placeUpDown = new System.Windows.Forms.NumericUpDown();
             this.textBox9 = new System.Windows.Forms.TextBox();
@@ -90,7 +91,10 @@ namespace ApexStreamDisplay
             this.outputTextBox = new System.Windows.Forms.TextBox();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.loopTimer = new System.Windows.Forms.Timer(this.components);
-            this.textBox6 = new System.Windows.Forms.TextBox();
+            this.matchHistory = new System.Windows.Forms.ListView();
+            this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             ((System.ComponentModel.ISupportInitialize)(this.killsTextBox)).BeginInit();
             this.groupBox3.SuspendLayout();
             this.menuStrip1.SuspendLayout();
@@ -152,7 +156,7 @@ namespace ApexStreamDisplay
             this.groupBox3.Controls.Add(this.richTextBox5);
             this.groupBox3.Controls.Add(this.richTextBox1);
             this.groupBox3.Controls.Add(this.liveKillsText);
-            this.groupBox3.Location = new System.Drawing.Point(257, 53);
+            this.groupBox3.Location = new System.Drawing.Point(257, 85);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(239, 72);
             this.groupBox3.TabIndex = 5;
@@ -387,12 +391,22 @@ namespace ApexStreamDisplay
             this.groupBox4.Controls.Add(this.textBox8);
             this.groupBox4.Controls.Add(this.textBox7);
             this.groupBox4.Controls.Add(this.updateRPButton);
-            this.groupBox4.Location = new System.Drawing.Point(257, 131);
+            this.groupBox4.Location = new System.Drawing.Point(257, 163);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Size = new System.Drawing.Size(239, 140);
             this.groupBox4.TabIndex = 8;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "RP Manual";
+            // 
+            // textBox6
+            // 
+            this.textBox6.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.textBox6.Location = new System.Drawing.Point(6, 82);
+            this.textBox6.Name = "textBox6";
+            this.textBox6.ReadOnly = true;
+            this.textBox6.Size = new System.Drawing.Size(59, 13);
+            this.textBox6.TabIndex = 27;
+            this.textBox6.Text = "Calculation:";
             // 
             // matchUpDown
             // 
@@ -568,7 +582,7 @@ namespace ApexStreamDisplay
             this.groupBox6.Controls.Add(this.button);
             this.groupBox6.Controls.Add(this.textBox1);
             this.groupBox6.Controls.Add(this.autoRPUpDown);
-            this.groupBox6.Location = new System.Drawing.Point(12, 139);
+            this.groupBox6.Location = new System.Drawing.Point(12, 171);
             this.groupBox6.Name = "groupBox6";
             this.groupBox6.Size = new System.Drawing.Size(239, 132);
             this.groupBox6.TabIndex = 10;
@@ -697,7 +711,7 @@ namespace ApexStreamDisplay
             // outputTextBox
             // 
             this.outputTextBox.BackColor = System.Drawing.SystemColors.Control;
-            this.outputTextBox.Location = new System.Drawing.Point(12, 277);
+            this.outputTextBox.Location = new System.Drawing.Point(12, 309);
             this.outputTextBox.Name = "outputTextBox";
             this.outputTextBox.ReadOnly = true;
             this.outputTextBox.Size = new System.Drawing.Size(484, 20);
@@ -708,7 +722,7 @@ namespace ApexStreamDisplay
             this.groupBox5.Controls.Add(this.wonCheckBox);
             this.groupBox5.Controls.Add(this.killsTextBox);
             this.groupBox5.Controls.Add(this.updateButton);
-            this.groupBox5.Location = new System.Drawing.Point(12, 53);
+            this.groupBox5.Location = new System.Drawing.Point(12, 85);
             this.groupBox5.Name = "groupBox5";
             this.groupBox5.Size = new System.Drawing.Size(239, 80);
             this.groupBox5.TabIndex = 11;
@@ -720,21 +734,40 @@ namespace ApexStreamDisplay
             this.loopTimer.Interval = 60000;
             this.loopTimer.Tick += new System.EventHandler(this.loopTimer_Tick);
             // 
-            // textBox6
+            // matchHistory
             // 
-            this.textBox6.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.textBox6.Location = new System.Drawing.Point(6, 82);
-            this.textBox6.Name = "textBox6";
-            this.textBox6.ReadOnly = true;
-            this.textBox6.Size = new System.Drawing.Size(59, 13);
-            this.textBox6.TabIndex = 27;
-            this.textBox6.Text = "Calculation:";
+            this.matchHistory.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader1,
+            this.columnHeader2,
+            this.columnHeader3});
+            this.matchHistory.HideSelection = false;
+            this.matchHistory.Location = new System.Drawing.Point(12, 336);
+            this.matchHistory.Name = "matchHistory";
+            this.matchHistory.Size = new System.Drawing.Size(484, 210);
+            this.matchHistory.TabIndex = 12;
+            this.matchHistory.UseCompatibleStateImageBehavior = false;
+            this.matchHistory.View = System.Windows.Forms.View.Details;
+            // 
+            // columnHeader1
+            // 
+            this.columnHeader1.Text = "Time:";
+            this.columnHeader1.Width = 94;
+            // 
+            // columnHeader2
+            // 
+            this.columnHeader2.Text = "Legend:";
+            this.columnHeader2.Width = 278;
+            // 
+            // columnHeader3
+            // 
+            this.columnHeader3.Text = "RP:";
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(509, 526);
+            this.ClientSize = new System.Drawing.Size(509, 561);
+            this.Controls.Add(this.matchHistory);
             this.Controls.Add(this.groupBox5);
             this.Controls.Add(this.outputTextBox);
             this.Controls.Add(this.showCheckBox);
@@ -835,6 +868,10 @@ namespace ApexStreamDisplay
         private System.Windows.Forms.Button updateRPButton;
         private System.Windows.Forms.NumericUpDown matchUpDown;
         private System.Windows.Forms.TextBox textBox6;
+        private System.Windows.Forms.ListView matchHistory;
+        private System.Windows.Forms.ColumnHeader columnHeader1;
+        private System.Windows.Forms.ColumnHeader columnHeader2;
+        private System.Windows.Forms.ColumnHeader columnHeader3;
     }
 }
 
