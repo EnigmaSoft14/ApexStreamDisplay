@@ -1,4 +1,5 @@
-Username:noobkingsmith
+Username:TheGuitarleader
 ApiKey:5vH9DcoCcNFDfEWBFPbP
-StaringRP:10800
+StaringRP:4910
 OutputFormat:$rp
+OutputRPFormat:$rank ($rp)

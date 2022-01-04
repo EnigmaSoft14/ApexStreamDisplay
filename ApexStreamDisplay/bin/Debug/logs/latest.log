@@ -1,112 +1,88 @@
-[19:12:36.416]: CPU Name: Intel(R) Core(TM) i7-9700K CPU @ 3.60GHz
-[19:12:36.418]: CPU Speed: 3600MHz
-[19:12:36.418]: Physical Cores: 8, Logical Cores: 8
-[19:12:36.495]: Physical Memory: 32702MB Total, 17348MB Free
-[19:12:36.495]: Operating System: Microsoft Windows 10 Home Build 19043 (64-bit)
-[19:12:36.496]: Available Disks:
-[19:12:36.506]:    Letter: C:, Name: Windows, File System: NTFS, 465GB Total, 214GB Free
-[19:12:36.506]:    Letter: D:, Name: Fast Games, File System: NTFS, 931GB Total, 595GB Free
-[19:12:36.506]:    Letter: E:, Name: Documents, File System: NTFS, 931GB Total, 748GB Free
-[19:12:36.507]:    Letter: F:, Name: Games, File System: NTFS, 931GB Total, 580GB Free
-[19:12:36.507]:    Letter: G:, Name: Videos, File System: NTFS, 3726GB Total, 3292GB Free
-[19:12:36.508]: ---------------------------------
-[19:12:36.508]: Apex RP Tracker  v2.1
-[19:12:36.508]: ---------------------------------
-[19:12:36.508]: Loaded Modules:
-[19:12:36.514]:    ApexStreamDisplay.exe
-[19:12:36.514]:    ntdll.dll
-[19:12:36.514]:    MSCOREE.DLL
-[19:12:36.514]:    KERNEL32.dll
-[19:12:36.514]:    KERNELBASE.dll
-[19:12:36.514]:    ADVAPI32.dll
-[19:12:36.514]:    msvcrt.dll
-[19:12:36.514]:    sechost.dll
-[19:12:36.514]:    RPCRT4.dll
-[19:12:36.514]:    mscoreei.dll
-[19:12:36.515]:    SHLWAPI.dll
-[19:12:36.515]:    kernel.appcore.dll
-[19:12:36.515]:    VERSION.dll
-[19:12:36.515]:    clr.dll
-[19:12:36.515]:    USER32.dll
-[19:12:36.515]:    VCRUNTIME140_CLR0400.dll
-[19:12:36.515]:    win32u.dll
-[19:12:36.515]:    ucrtbase_clr0400.dll
-[19:12:36.516]:    GDI32.dll
-[19:12:36.516]:    gdi32full.dll
-[19:12:36.516]:    msvcp_win.dll
-[19:12:36.516]:    ucrtbase.dll
-[19:12:36.517]:    IMM32.DLL
-[19:12:36.517]:    mscorlib.ni.dll
-[19:12:36.517]:    ole32.dll
-[19:12:36.517]:    combase.dll
-[19:12:36.518]:    bcryptPrimitives.dll
-[19:12:36.518]:    uxtheme.dll
-[19:12:36.518]:    clrjit.dll
-[19:12:36.518]:    OLEAUT32.dll
-[19:12:36.519]:    System.ni.dll
-[19:12:36.519]:    System.Drawing.ni.dll
-[19:12:36.520]:    System.Windows.Forms.ni.dll
-[19:12:36.520]:    System.Core.ni.dll
-[19:12:36.520]:    System.Configuration.ni.dll
-[19:12:36.521]:    System.Xml.ni.dll
-[19:12:36.522]:    shell32.dll
-[19:12:36.523]:    windows.storage.dll
-[19:12:36.523]:    Wldp.dll
-[19:12:36.523]:    SHCORE.dll
-[19:12:36.523]:    profapi.dll
-[19:12:36.524]:    bcrypt.dll
-[19:12:36.524]:    CRYPTSP.dll
-[19:12:36.524]:    rsaenh.dll
-[19:12:36.524]:    CRYPTBASE.dll
-[19:12:36.524]:    comctl32.dll
-[19:12:36.525]:    gdiplus.dll
-[19:12:36.525]:    DWrite.dll
-[19:12:36.525]:    MSCTF.dll
-[19:12:36.525]:    MsftEdit.DLL
-[19:12:36.526]:    TextShaping.dll
-[19:12:36.526]:    WindowsCodecs.dll
-[19:12:36.526]:    System.Management.ni.dll
-[19:12:36.526]:    clbcatq.dll
-[19:12:36.527]:    wmiutils.dll
-[19:12:36.527]:    wbemcomn.dll
-[19:12:36.527]:    wbemprox.dll
-[19:12:36.527]:    WS2_32.dll
-[19:12:36.528]:    wminet_utils.dll
-[19:12:36.528]:    wbemsvc.dll
-[19:12:36.528]:    fastprox.dll
-[19:12:36.528]:    amsi.dll
-[19:12:36.529]:    USERENV.dll
-[19:12:36.529]:    MpOav.dll
-[19:12:36.529]:    psapi.dll
-[19:12:36.620]: Loading API info:
-[19:12:36.620]:    Username:noobkingsmith
-[19:12:36.621]:    ApiKey:5vH9DcoCcNFDfEWBFPbP
-[19:12:36.622]:    StaringRP:10800
-[19:12:36.623]:    OutputFormat:$rp
-[19:12:36.623]: ==== Startup Complete ======================
-[19:13:40.529]: Sending API Request:
-[19:13:40.529]:    Url: https://api.mozambiquehe.re/bridge?version=5&platform=PC&player=noobkingsmith&auth=5vH9DcoCcNFDfEWBFPbP
-[19:13:43.418]:    Player: NoobKing
-[19:13:43.419]:    Platform: PC
-[19:13:43.421]:    RP Score: 10800
-[19:13:43.421]:    Response Time: 2887.0823
-[19:13:43.421]:    Version: 5
-[19:13:43.423]:    Access Type: BASIC
-[19:13:43.423]:    Cluster ID: 3
-[19:13:43.425]:    Cluster Srv: MAIN-CLUSTER
-[19:14:40.520]: Sending API Request:
-[19:14:40.520]:    Url: https://api.mozambiquehe.re/bridge?version=5&platform=PC&player=noobkingsmith&auth=5vH9DcoCcNFDfEWBFPbP
-[19:14:42.731]:    Player: NoobKing
-[19:14:42.731]:    Platform: PC
-[19:14:42.732]:    RP Score: 10800
-[19:14:42.732]:    Response Time: 2209.7736
-[19:14:42.732]:    Version: 5
-[19:14:42.733]:    Access Type: BASIC
-[19:14:42.733]:    Cluster ID: 2
-[19:14:42.733]:    Cluster Srv: MAIN-CLUSTER
-[19:15:20.114]: ==== Shutting down ==============
-[19:15:20.115]: Saving API Info:
-[19:15:20.116]: Username:noobkingsmith
-[19:15:20.116]: ApiKey:5vH9DcoCcNFDfEWBFPbP
-[19:15:20.116]: StaringRP:10800
-[19:15:20.116]: OutputFormat:$rp
+[18:34:48.146]: CPU Name: Intel(R) Core(TM) i7-9700K CPU @ 3.60GHz
+[18:34:48.148]: CPU Speed: 3600MHz
+[18:34:48.148]: Physical Cores: 8, Logical Cores: 8
+[18:34:48.244]: Physical Memory: 32702MB Total, 15189MB Free
+[18:34:48.244]: Operating System: Microsoft Windows 10 Home Build 19043 (64-bit)
+[18:34:48.245]: Available Disks:
+[18:34:48.267]:    Letter: C:, Name: Windows, File System: NTFS, 465GB Total, 187GB Free
+[18:34:48.267]:    Letter: D:, Name: Fast Games, File System: NTFS, 931GB Total, 571GB Free
+[18:34:48.268]:    Letter: E:, Name: Documents, File System: NTFS, 931GB Total, 738GB Free
+[18:34:48.269]:    Letter: F:, Name: Games, File System: NTFS, 931GB Total, 504GB Free
+[18:34:48.273]:    Letter: G:, Name: Videos, File System: NTFS, 3726GB Total, 3127GB Free
+[18:34:48.280]:    Letter: H:, Name: My Passport, File System: NTFS, 1862GB Total, 875GB Free
+[18:34:48.288]: ---------------------------------
+[18:34:48.288]: Apex RP Tracker  v4.0 (Beta)
+[18:34:48.288]: ---------------------------------
+[18:34:48.288]: Loaded Modules:
+[18:34:48.297]:    ApexStreamDisplay.exe
+[18:34:48.297]:    ntdll.dll
+[18:34:48.297]:    MSCOREE.DLL
+[18:34:48.297]:    KERNEL32.dll
+[18:34:48.297]:    KERNELBASE.dll
+[18:34:48.297]:    ADVAPI32.dll
+[18:34:48.297]:    msvcrt.dll
+[18:34:48.297]:    sechost.dll
+[18:34:48.297]:    RPCRT4.dll
+[18:34:48.297]:    mscoreei.dll
+[18:34:48.297]:    SHLWAPI.dll
+[18:34:48.297]:    kernel.appcore.dll
+[18:34:48.297]:    VERSION.dll
+[18:34:48.297]:    clr.dll
+[18:34:48.297]:    USER32.dll
+[18:34:48.297]:    VCRUNTIME140_CLR0400.dll
+[18:34:48.297]:    ucrtbase_clr0400.dll
+[18:34:48.297]:    win32u.dll
+[18:34:48.297]:    GDI32.dll
+[18:34:48.297]:    gdi32full.dll
+[18:34:48.297]:    msvcp_win.dll
+[18:34:48.297]:    ucrtbase.dll
+[18:34:48.297]:    IMM32.DLL
+[18:34:48.297]:    mscorlib.ni.dll
+[18:34:48.297]:    ole32.dll
+[18:34:48.297]:    combase.dll
+[18:34:48.297]:    bcryptPrimitives.dll
+[18:34:48.297]:    uxtheme.dll
+[18:34:48.297]:    clrjit.dll
+[18:34:48.297]:    OLEAUT32.dll
+[18:34:48.298]:    System.ni.dll
+[18:34:48.298]:    System.Drawing.ni.dll
+[18:34:48.298]:    System.Windows.Forms.ni.dll
+[18:34:48.298]:    IconCodecService.dll
+[18:34:48.298]:    WindowsCodecs.dll
+[18:34:48.298]:    bcrypt.dll
+[18:34:48.298]:    System.Core.ni.dll
+[18:34:48.298]:    System.Configuration.ni.dll
+[18:34:48.298]:    System.Xml.ni.dll
+[18:34:48.298]:    shell32.dll
+[18:34:48.298]:    windows.storage.dll
+[18:34:48.298]:    Wldp.dll
+[18:34:48.298]:    SHCORE.dll
+[18:34:48.298]:    profapi.dll
+[18:34:48.298]:    CRYPTSP.dll
+[18:34:48.298]:    rsaenh.dll
+[18:34:48.298]:    CRYPTBASE.dll
+[18:34:48.298]:    comctl32.dll
+[18:34:48.298]:    gdiplus.dll
+[18:34:48.298]:    DWrite.dll
+[18:34:48.298]:    MSCTF.dll
+[18:34:48.298]:    TextShaping.dll
+[18:34:48.298]:    System.Management.ni.dll
+[18:34:48.298]:    clbcatq.dll
+[18:34:48.298]:    wmiutils.dll
+[18:34:48.298]:    wbemcomn.dll
+[18:34:48.298]:    wbemprox.dll
+[18:34:48.298]:    WS2_32.dll
+[18:34:48.298]:    wminet_utils.dll
+[18:34:48.298]:    wbemsvc.dll
+[18:34:48.298]:    fastprox.dll
+[18:34:48.298]:    amsi.dll
+[18:34:48.298]:    USERENV.dll
+[18:34:48.298]:    MpOav.dll
+[18:34:48.298]:    psapi.dll
+[18:34:48.389]: Loading API info:
+[18:34:48.389]:    Username:TheGuitarleader
+[18:34:48.390]:    ApiKey:5vH9DcoCcNFDfEWBFPbP
+[18:34:48.390]:    StaringRP:4910
+[18:34:48.390]:    OutputFormat:$rp
+[18:34:48.390]:    OutputRPFormat:$rank ($rp)
+[18:34:48.390]: ==== Startup Complete ======================

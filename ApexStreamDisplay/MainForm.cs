@@ -18,13 +18,22 @@ namespace ApexStreamDisplay
 {
     public partial class MainForm : Form
     {
-        public static string _version = "3.0 (Beta)";
+        public static string _version = "4.0 (Beta)";
         public static string _directory = Directory.GetCurrentDirectory();
         public static int _apiVersion = 5;
+
+        public Icon _red = new Icon(@"Icons\apex-legends-symbol-red.ico");
+        public Icon _blue = new Icon(@"Icons\apex-legends-symbol-blue.ico");
+        public Icon _gray = new Icon(@"Icons\apex-legends-symbol-gray.ico");
+
+        public static string[] rankedTier = { "Bronze 3", "Bronze 2", "Bronze 1", "Silver 4", "Silver 3", "Silver 2", "Silver 1", "Gold 4", "Gold 3", "Gold 2", "Gold 1", "Platinum 4", "Platinum 3", "Platinum 2", "Platinum 1", "Diamond 4", "Diamond 3", "Diamond 2", "Diamond 1", "Master" };
+        public static int[] rankedRP = { 300, 600, 900, 1200, 1600, 2000, 2400, 2800, 3300, 3800, 4300, 4800, 5400, 6000, 6600, 7200, 7900, 8600, 9300, 10000 };
+        public static int index = 0;
 
         public static int _kills;
         public static int _wins;
         public static int _rp;
+        public static int _rpDistance;
         public static int _matchRP;
         public static int _games;
 
@@ -32,6 +41,8 @@ namespace ApexStreamDisplay
         {
             InitializeComponent();
             this.Text = "Apex RP Tracker ";
+            notifyIcon.Text = this.Text;
+            modeComboBox.SelectedIndex = 0;
 
             if (!Directory.Exists(_directory + @"\TextFiles"))
             {
@@ -106,6 +117,21 @@ namespace ApexStreamDisplay
                 {
                     sw.WriteLine(format);
                 }
+            }
+        }
+
+        public void WriteRPDistance(int value)
+        {
+            string format = rpDisFormatText.Text;
+
+            string valueString = value.ToString();
+            format = format.Replace("$rp", valueString);
+            format = format.Replace("$rank", rankedTier[index]);
+
+            distanceRPTextBox.Text = format;
+            using (StreamWriter sw = new StreamWriter(_directory + @"\TextFiles\RP-Distance.txt"))
+            {
+                sw.WriteLine(format);
             }
         }
 
@@ -231,6 +257,23 @@ namespace ApexStreamDisplay
             WriteRPToFile(0);
         }
 
+        public void FindDistance(int compare)
+        {
+            int count = 0;
+            foreach(var r in rankedRP)
+            {
+                Console.WriteLine(r);
+                if(compare < r)
+                {
+                    Console.WriteLine($"{r}\nTier: {rankedTier[count]} | Points: {rankedRP[count]}");
+                    _rpDistance = r;
+                    index = count;
+                    break;
+                }
+                count++;
+            }
+        }
+
         private void showFileLocationToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Process.Start(_directory);
@@ -255,7 +298,7 @@ namespace ApexStreamDisplay
 
         private void dashboardToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Process.Start($"https://apexlegendsapi.com/dashboard.php?key={ apiKeyTextBox.Text}");
+            Process.Start($"https://apexlegendsapi.com/dashboard.php?key={apiKeyTextBox.Text}");
         }
 
         private void button11_Click(object sender, EventArgs e)
@@ -263,8 +306,19 @@ namespace ApexStreamDisplay
             try
             {
                 var player = GetPlayerData("https://api.mozambiquehe.re/bridge?version=" + _apiVersion + "&platform=PC&player=" + usernameTextBox.Text + "&auth=" + apiKeyTextBox.Text);
-                autoRPUpDown.Value = Convert.ToInt32(player.global.rank.rankScore);
-                _matchRP = Convert.ToInt32(player.global.rank.rankScore);
+
+                if(modeComboBox.SelectedIndex == 0)
+                {
+                    FindDistance(Convert.ToInt32(player.global.rank.rankScore));
+                    autoRPUpDown.Value = Convert.ToInt32(player.global.rank.rankScore);
+                    _matchRP = Convert.ToInt32(player.global.rank.rankScore);
+                }
+                else if (modeComboBox.SelectedIndex == 1)
+                {
+                    FindDistance(Convert.ToInt32(player.global.arena.rankScore));
+                    autoRPUpDown.Value = Convert.ToInt32(player.global.arena.rankScore);
+                    _matchRP = Convert.ToInt32(player.global.arena.rankScore);
+                }
             }
             catch(Exception ex)
             {
@@ -283,18 +337,41 @@ namespace ApexStreamDisplay
         {
             try
             {
-                var rpDiff = Convert.ToInt32(playerData.global.rank.rankScore - autoRPUpDown.Value);
-                int rp = Convert.ToInt32(playerData.global.rank.rankScore) - _matchRP;
+                int rpDiff = 0;
+                int rp = 0;
+                int totalRp = 0;
+                int newRPDis = 0;
+
+                if (modeComboBox.SelectedIndex == 0)
+                {
+                    FindDistance(Convert.ToInt32(playerData.global.rank.rankScore));
+                    rpDiff = Convert.ToInt32(playerData.global.rank.rankScore - autoRPUpDown.Value);
+                    rp = Convert.ToInt32(playerData.global.rank.rankScore) - _matchRP;
+                    totalRp = Convert.ToInt32(playerData.global.rank.rankScore);
+                    newRPDis = _rpDistance - totalRp;
+                }
+                else if (modeComboBox.SelectedIndex == 1)
+                {
+                    FindDistance(Convert.ToInt32(playerData.global.arena.rankScore));
+                    rpDiff = Convert.ToInt32(playerData.global.arena.rankScore - autoRPUpDown.Value);
+                    rp = Convert.ToInt32(playerData.global.arena.rankScore) - _matchRP;
+                    totalRp = Convert.ToInt32(playerData.global.arena.rankScore);
+                    newRPDis = _rpDistance - totalRp;
+                }
 
                 Console.WriteLine($"RP: {rp}");
-                //Console.WriteLine($"Match RP: {matchRP}");
+                Console.WriteLine($"Global RP: {_rp}");
                 Console.WriteLine($"Global Match RP: {_matchRP}");
-                Console.WriteLine($"Player RP: {Convert.ToInt32(playerData.global.rank.rankScore)}");
+                Console.WriteLine($"Player RP: {totalRp}");
+                Console.WriteLine($"RP Distance: {_rpDistance}");
+                Console.WriteLine($"New RP Distance: {newRPDis}");
 
                 _matchRP = Convert.ToInt32(playerData.global.rank.rankScore);
 
-                if (rp != _rp)
+                if (rp != _rp && rp != 0)
                 {
+                    Console.WriteLine(true);
+
                     string rpString = null;
                     if (rp >= 0)
                     {
@@ -305,23 +382,33 @@ namespace ApexStreamDisplay
                         rpString = rp.ToString();
                     }
 
-                    string[] row = { DateTime.Now.ToString("hh:mm:ss tt"), playerData.realtime.selectedLegend, rpString };
-                    ListViewItem lvi = new ListViewItem(row);
+                    int rowNum = matchHistory.Rows.Add(DateTime.Now.ToString("hh:mm:ss tt"), modeComboBox.Text, playerData.realtime.selectedLegend, rpString, rpDiff.ToString(), totalRp.ToString());
+                    DataGridViewRow row = matchHistory.Rows[rowNum];
 
-                    if (rp > _rp)
+                    if (rp > 0)
                     {
-                        lvi.ForeColor = Color.Green;
+                        row.DefaultCellStyle.ForeColor = Color.Green;
+                        Console.WriteLine("Greater");
                     }
-                    else if (rp <= _rp)
+                    else if (rp <= 0)
                     {
-                        lvi.ForeColor = Color.Red;
+                        row.DefaultCellStyle.ForeColor = Color.Red;
+                        Console.WriteLine("Less");
                     }
 
-                    matchHistory.Items.Add(lvi);
+                    //foreach (DataGridViewCell cell in matchHistory.Rows[0])
+                    //{
+
+                    //}
+                }
+                else
+                {
+                    Console.WriteLine(true);
                 }
 
                 _rp = rpDiff;
                 WriteRPToFile(_rp);
+                WriteRPDistance(newRPDis);
             }
             catch (Exception ex)
             {
@@ -333,6 +420,10 @@ namespace ApexStreamDisplay
         {
             try
             {
+                Icon start = notifyIcon.Icon;
+
+                notifyIcon.Icon = _blue;
+
                 Logger.WriteLine("Sending API Request:");
                 Logger.WriteLine($"   Url: {url}");
 
@@ -353,7 +444,8 @@ namespace ApexStreamDisplay
 
                     Logger.WriteLine($"   Player: {playerData.global.name}");
                     Logger.WriteLine($"   Platform: {playerData.global.platform}");
-                    Logger.WriteLine($"   RP Score: {playerData.global.rank.rankScore}");
+                    Logger.WriteLine($"   BR Ranked Score: {playerData.global.rank.rankScore}");
+                    Logger.WriteLine($"   AR Ranked Score: {playerData.global.arena.rankScore}");
                     Logger.WriteLine($"   Response Time: {interval.TotalMilliseconds}");
                     Logger.WriteLine($"   Version: {_apiVersion}");
                     Logger.WriteLine($"   Access Type: {playerData.mozambiquehere_internal.APIAccessType}");
@@ -362,18 +454,19 @@ namespace ApexStreamDisplay
 
                     string format = $"Pulled ranked score \"{playerData.global.rank.rankScore}\" from player \"{playerData.global.name}\" in {interval.TotalMilliseconds} ms";
                     outputTextBox.Text = format;
+                    notifyIcon.Icon = start;
                     return playerData;
                 }
                 else
                 {
-                    MessageBox.Show("No response from API", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    //MessageBox.Show("No response from API", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     Logger.WriteLine("Request returned null");
                     return null;
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                //MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Logger.Exception(ex);
                 return null;
             }
@@ -411,6 +504,11 @@ namespace ApexStreamDisplay
                             outputFormatText.Text = line.Replace("OutputFormat:", "");
                             Logger.WriteLine($"   {line}");
                         }
+                        else if (line.Contains("OutputRPFormat:"))
+                        {
+                            rpDisFormatText.Text = line.Replace("OutputRPFormat:", "");
+                            Logger.WriteLine($"   {line}");
+                        }
                     }
                 }
             }
@@ -432,6 +530,9 @@ namespace ApexStreamDisplay
 
                 sw.WriteLine("OutputFormat:" + outputFormatText.Text);
                 Logger.WriteLine("OutputFormat:" + outputFormatText.Text);
+
+                sw.WriteLine("OutputRPFormat:" + rpDisFormatText.Text);
+                Logger.WriteLine("OutputRPFormat:" + rpDisFormatText.Text);
                 sw.Close();
             }
         }
@@ -449,6 +550,7 @@ namespace ApexStreamDisplay
                 button12.Enabled = false;
                 loopTimer.Interval = Convert.ToInt32(minutesUpDown.Value * 60000);
                 loopTimer.Start();
+                notifyIcon.Icon = _red;
 
                 string format = $"Started auto refresh on interval {minutesUpDown.Value * 60} seconds";
                 outputTextBox.Text = format;
@@ -457,8 +559,9 @@ namespace ApexStreamDisplay
             {
                 button12.Enabled = true;
                 loopTimer.Stop();
+                notifyIcon.Icon = _gray;
 
-                string format = $"[Stopped auto refresh";
+                string format = $"Stopped auto refresh";
                 outputTextBox.Text = format;
             }
         }
@@ -595,6 +698,37 @@ namespace ApexStreamDisplay
         private void placeUpDown_ValueChanged(object sender, EventArgs e)
         {
             CalculateRP();
+        }
+
+        private void issuesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Process.Start("https://github.com/TheGuitarleader/ApexStreamDisplay/issues");
+        }
+
+        private void MainForm_Resize(object sender, EventArgs e)
+        {
+            if(WindowState == FormWindowState.Minimized)
+            {
+                this.Hide();
+            }
+        }
+
+        private void restoreToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (WindowState == FormWindowState.Minimized)
+            {
+                this.Show();
+            }
+        }
+
+        private void matchHistory_SelectionChanged(object sender, EventArgs e)
+        {
+            matchHistory.ClearSelection();
+        }
+
+        private void rpDisFormatButton_Click(object sender, EventArgs e)
+        {
+            rpDisFormatText.Text = "$rank ($rp)";
         }
     }
 }
