@@ -16,3 +16,4 @@ E:\Documents\Visual Studio Projects\ApexStreamDisplay\ApexStreamDisplay\bin\Debu
 E:\Documents\Visual Studio Projects\ApexStreamDisplay\ApexStreamDisplay\bin\Debug\Icons\apex-legends-symbol-blue.ico
 E:\Documents\Visual Studio Projects\ApexStreamDisplay\ApexStreamDisplay\bin\Debug\Icons\apex-legends-symbol-gray.ico
 E:\Documents\Visual Studio Projects\ApexStreamDisplay\ApexStreamDisplay\bin\Debug\Icons\apex-legends-symbol-red.ico
+E:\Documents\Visual Studio Projects\ApexStreamDisplay\ApexStreamDisplay\obj\Debug\ApexStreamDisplay.UpdateForm.resources

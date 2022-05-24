@@ -1,5 +1,0 @@
-Username:TheGuitarleader
-ApiKey:5vH9DcoCcNFDfEWBFPbP
-StaringRP:4910
-OutputFormat:$rp
-OutputRPFormat:$rank ($rp)
